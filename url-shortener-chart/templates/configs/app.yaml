@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextjs-url-shortener
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.app.replicas }}
+  selector:
+    matchLabels:
+      name: nextjs-url-shortener
+  template:
+    metadata:
+      labels:
+        name: nextjs-url-shortener
+    spec:
+      containers:
+      - name: nextjs-url-shortener
+        image: dimitarnzhv/nextjs-url-shortener:latest
+        ports:
+        - containerPort: 3000
+        - containerPort: 9100 # Metrics endpoint
+        envFrom:
+        - configMapRef:
+            name: nextjs-config
+        - secretRef:
+            name: nextjs-secrets
+        resources:
+          requests:
+            memory: {{ .Values.app.requests.memory }}
+            cpu: {{ .Values.app.requests.cpu }}
+          limits:
+            memory: {{ .Values.app.limits.memory }}
+            cpu: {{ .Values.app.limits.cpu }}

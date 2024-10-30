@@ -1,0 +1,13 @@
+.env
+/url-shortener-chart/values.yaml
+*/.env
+*/node_modules
+*/dist
+*/build
+*/.next
+*/.nuxt
+*/.cache
+*/.idea
+*/.vscode
+*/.DS_Store
+*/.nyc_output

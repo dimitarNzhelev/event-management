@@ -1,0 +1,29 @@
+secrets:
+  app:
+    nextauthSecret: XXXXXXXXXXXXXXXXXXXX
+    googleClientId: "XXXXXXXXXXXXXXXXXXXX"
+    googleClientSecret: "XXXXXXXXXXXXXXXXXXXX"
+    githubClientId: "XXXXXXXXXXXXXXXXXXXX"
+    githubClientSecret: "XXXXXXXXXXXXXXXXXXXX"
+  db:
+    host: "XXXXXXXXXXXXXXXXXXXX"
+    port: "XXXXXXXXXXXXXXXXXXxx"
+    user: "XXXXXXXXXXXXXXXXXXXX"
+    password: "XXXXXXXXXXXXXXXXXXXX"
+    name: "XXXXXXXXXXXXXXXXXXXX"
+
+postgres:
+  storage: "1Gi"
+
+nextauthUrl: "http://minikube.local:30080/api/auth"
+
+app:
+  replicas: 2
+  requests:
+    cpu: "1000m"
+    memory: "256Mi"
+  limits:
+    cpu: "2000m"
+    memory: "512Mi"
+
+namespace: "url-shortener-app"
