@@ -332,12 +332,6 @@ grafana:
       exemplarTraceIdDestinations: {}
   extraConfigmapMounts: []
   deleteDatasources: []
-  additionalDataSources: 
-    - name: Loki
-      type: loki
-      url: http://loki-loki-distributed-gateway.monitoring.svc.cluster.local
-      access: proxy
-      isDefault: true
   service:
     portName: web
 

@@ -10,6 +10,8 @@ helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx \
   --namespace ingress-nginx \
   --create-namespace \
   --set controller.metrics.enabled=true \
+  --set controller.metrics.service.annotations."prometheus\.io/scrape"="\"true\"" \
+  --set controller.metrics.service.annotations."prometheus\.io/port"="\"10254\"" \
   --set controller.metrics.serviceMonitor.enabled=true \
   --set controller.metrics.serviceMonitor.namespace=monitoring \
   --set controller.metrics.serviceMonitor.additionalLabels.release="prometheus"

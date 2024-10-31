@@ -15,7 +15,7 @@ secrets:
 postgres:
   storage: "1Gi"
 
-nextauthUrl: "http://minikube.local:30080/api/auth"
+nextauthUrl: "http:/your.domain/api/auth"
 
 app:
   replicas: 2
@@ -27,3 +27,5 @@ app:
     memory: "512Mi"
 
 namespace: "url-shortener-app"
+
+
