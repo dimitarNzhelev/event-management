@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: node-labeler-script
+  namespace: monitoring 
+data:
+  label-nodes.sh: |
+    #!/bin/bash
+
+    TARGET_LABEL_KEY="name"
+    TARGET_LABEL_VALUE="nextjs-url-shortener-node"
+    APP_LABEL_SELECTOR="name=nextjs-url-shortener"
+
+    NODES=$(kubectl get pods -l "$APP_LABEL_SELECTOR" -o=jsonpath='{.items[*].spec.nodeName}' -A)
+
+    for node in $NODES; do
+      echo "Labeling node $node with $TARGET_LABEL_KEY=$TARGET_LABEL_VALUE"
+      kubectl label nodes "$node" "$TARGET_LABEL_KEY=$TARGET_LABEL_VALUE" --overwrite
+    done
