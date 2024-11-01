@@ -22,7 +22,8 @@ helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx \
   --set controller.metrics.serviceMonitor.additionalLabels.release="prometheus"
 
 kubectl apply -f monitoring/service-monitors/
-kubectl apply -f monitoring/daemonsets/
+kubectl apply -f monitoring/node-exporter/
 kubectl apply -f ingress/ingress.yaml
 
+# only for minikube
 minikube addons enable ingress
