@@ -14,6 +14,7 @@ before_script:
 - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
 - rm -rf .terraform
 - terraform --version
+- cd terraform
 - terraform init
 
 validate:
