@@ -1,3 +1,14 @@
+# TODO: UPDATE THE EXSISTING CODE TO ACCTUALLY WORK WITH THE NEW VERSION OF THE MODULES AND WORKINS IAM POLICIES
+terraform {
+  backend "s3" {
+    bucket         = "dzhelev-terraform-state-bucket"
+    key            = "./terraform.tfstate"
+    region         =  "eu-central-1"
+    dynamodb_table = "dzhelev-tf-state-lock-db"
+    encrypt        = true
+  }
+}
+
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.14.0"

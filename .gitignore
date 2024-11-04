@@ -11,5 +11,6 @@
 */.vscode
 */.DS_Store
 */.nyc_output
-*/.terraform
 */.terraform*
+*/terraform.tfstate
+*/node_modules
