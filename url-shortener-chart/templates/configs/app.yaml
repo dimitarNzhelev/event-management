@@ -18,12 +18,63 @@ spec:
         image: dimitarnzhv/nextjs-url-shortener:latest
         ports:
         - containerPort: 3000
-        - containerPort: 9100 # Metrics endpoint
-        envFrom:
-        - configMapRef:
-            name: nextjs-config
-        - secretRef:
-            name: nextjs-secrets
+        - containerPort: 9100 
+        env:
+        - name: GOOGLE_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: nextjs-secrets
+              key: GOOGLE_CLIENT_ID
+        - name: GOOGLE_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: nextjs-secrets
+              key: GOOGLE_CLIENT_SECRET
+        - name: GITHUB_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: nextjs-secrets
+              key: GITHUB_CLIENT_ID
+        - name: GITHUB_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: nextjs-secrets
+              key: GITHUB_CLIENT_SECRET
+        - name: NEXTAUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: nextjs-secrets
+              key: NEXTAUTH_SECRET
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: nextjs-secrets
+              key: DB_HOST
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: nextjs-secrets
+              key: DB_NAME
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: nextjs-secrets
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nextjs-secrets
+              key: DB_PASSWORD
+        - name: DB_PORT
+          valueFrom:
+            secretKeyRef:
+              name: nextjs-secrets
+              key: DB_PORT
+        - name: NEXTAUTH_URL
+          valueFrom:
+            configMapKeyRef:
+              name: nextjs-config
+              key: NEXTAUTH_URL
         resources:
           requests:
             memory: {{ .Values.app.requests.memory }}

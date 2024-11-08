@@ -35,9 +35,18 @@ spec:
             secretKeyRef:
               name: nextjs-secrets
               key: DB_PASSWORD
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
         volumeMounts: 
         - name: postgres-data
           mountPath: /var/lib/postgresql/data
+        command:
+        - /bin/bash
+        - -c
+        - |
+          mkdir -p /var/lib/postgresql/data/pgdata
+          chown postgres:postgres /var/lib/postgresql/data/pgdata
+          exec docker-entrypoint.sh postgres
 
       - name: postgres-exporter
         image: prometheuscommunity/postgres-exporter  # Add the image here
