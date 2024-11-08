@@ -12,6 +12,7 @@ helm upgrade --install -f monitoring/values.yaml kube-prometheus-stack prometheu
 helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx \
   --namespace ingress-nginx \
   --create-namespace \
+  --set-string controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-type"="nlb" \
   --set controller.metrics.enabled=true \
   --set controller.metrics.service.annotations."prometheus\.io/scrape"="\"true\"" \
   --set controller.metrics.service.annotations."prometheus\.io/port"="\"10254\"" \
@@ -21,7 +22,7 @@ helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx \
 
 kubectl apply -f monitoring/service-monitors/
 kubectl apply -f monitoring/node-exporter/
-kubectl apply -f ingress/ingress.yaml
+# kubectl apply -f ingress/ingress.yaml
 
 # only for minikube
 #minikube addons enable ingress
