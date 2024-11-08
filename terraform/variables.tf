@@ -15,10 +15,10 @@ variable "cluster_version" {
   default     = "1.28"
 }
 
-variable "vpc_cidr" {
-  description = "CIDR block for VPC"
+variable "vpc_name" {
+  description = "Name of the VPC"
   type        = string
-  default     = "10.0.0.0/16"
+  default     = "dzhelev-eks-vpc"
 }
 
 variable "azs" {

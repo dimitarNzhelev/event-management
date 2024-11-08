@@ -9,6 +9,7 @@ spec:
     spec:
       template:
         spec:
+          serviceAccountName: node-labeler-sa 
           containers:
           - name: label-nodes
             image: bitnami/kubectl:latest

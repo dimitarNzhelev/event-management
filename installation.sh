@@ -24,4 +24,4 @@ kubectl apply -f monitoring/node-exporter/
 kubectl apply -f ingress/ingress.yaml
 
 # only for minikube
-minikube addons enable ingress
+#minikube addons enable ingress
