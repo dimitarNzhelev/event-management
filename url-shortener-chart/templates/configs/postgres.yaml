@@ -52,6 +52,7 @@ spec:
       name: postgres-data
     spec:
       accessModes: ["ReadWriteOnce"]
+      storageClassName: ebs-sc
       resources:
         requests:
           storage: {{ .Values.postgres.storage }}
