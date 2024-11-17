@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-receiver
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: go-receiver
+  template:
+    metadata:
+      labels:
+        name: go-receiver
+    spec:
+      containers:
+      - name: go-receiver
+        image: dimitarnzhv/go-receiver:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DORIS_HOST
+          valueFrom:
+            secretKeyRef:
+              name: receiver-secrets
+              key: DORIS_HOST
+        - name: DORIS_PORT
+          valueFrom:
+            secretKeyRef:
+              name: receiver-secrets
+              key: DORIS_PORT
+        - name: DORIS_USER
+          valueFrom:
+            secretKeyRef:
+              name: receiver-secrets
+              key: DORIS_USER
+        - name: DORIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: receiver-secrets
+              key: DORIS_PASSWORD
+        - name: DORIS_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: receiver-secrets
+              key: DORIS_DATABASE
+        resources:
+          requests:
+            cpu: "1000m"
+            memory: "256Mi"
+          limits:
+            cpu: "2000m"
+            memory: "512Mi"

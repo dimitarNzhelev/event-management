@@ -14,3 +14,4 @@
 */.terraform*
 */terraform.tfstate
 */node_modules
+/monitoring/go-receiver/secrets.yaml

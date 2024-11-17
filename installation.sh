@@ -8,6 +8,12 @@ helm repo add selectdb https://charts.selectdb.com
 
 helm repo update
 
+helm install operator selectdb/doris-operator --namespace monitoring
+
+kubectl apply -f monitoring/doris/pv.yaml
+
+helm install -f monitoring/doris/values.yaml doriscluster selectdb/doris --namespace monitoring 
+
 helm upgrade --install -f monitoring/values.yaml kube-prometheus-stack prometheus-community/kube-prometheus-stack -n monitoring
 
 
@@ -26,11 +32,6 @@ kubectl apply -f monitoring/service-monitors/
 kubectl apply -f monitoring/node-exporter/cluster-role/
 kubectl apply -f monitoring/node-exporter/
 kubectl apply -f ingress/ingress.yaml
-
-helm install operator selectdb/doris-operator --namespace monitoring
-
-helm install -f monitoring/doris.yaml doriscluster selectdb/doris --namespace monitoring 
-
 
 # only for minikube
 #minikube addons enable ingress

@@ -71,11 +71,14 @@ feSpec:
     # meta volume, mountPath is /opt/apache-doris/fe/doris-meta
     metaPersistentVolume:
       storage: 2Gi
+      storageClassName: ""
     # when use specific storageclass, the storageClassName should reConfig, example as annotation.
     #   storageClassName: ""
     # logs volume, mountPath is /opt/apache-doris/fe/log
     logsPersistentVolume:
       storage: 2Gi
+      storageClassName: ""
+
     # when use specific storageclass, the storageClassName should reConfig, example as annotation.
     #   storageClassName: ""
 
@@ -226,11 +229,13 @@ beSpec:
     # data volume, mountPath is /opt/apache-doris/be/storage
     dataPersistentVolume:
       storage: 2Gi
+      storageClassName: ""
     # when use specific storageclass, the storageClassName should reConfig, example as annotation.
     #   storageClassName: ""
     # logs volume, mountPath is /opt/apache-doris/be/log
     logsPersistentVolume:
       storage: 2Gi
+      storageClassName: ""
     # when use specific storageclass, the storageClassName should reConfig, example as annotation.
     #   storageClassName: ""
   systemInitialization: {}
