@@ -1,3 +1,6 @@
 [submodule "url-shortener"]
 	path = url-shortener
 	url = https://github.com/dimitarNzhelev/url-shortener.git
+[submodule "go-receiver-agent"]
+	path = go-receiver-agent
+	url = https://github.com/dimitarNzhelev/go-receiver-agent.git
