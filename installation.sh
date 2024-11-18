@@ -14,6 +14,8 @@ kubectl apply -f monitoring/doris/pv.yaml
 
 helm install -f monitoring/doris/values.yaml doriscluster selectdb/doris --namespace monitoring 
 
+kubectl apply -f monitoring/go-receiver/
+
 helm upgrade --install -f monitoring/values.yaml kube-prometheus-stack prometheus-community/kube-prometheus-stack -n monitoring
 
 
@@ -31,7 +33,7 @@ helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx \
 kubectl apply -f monitoring/service-monitors/
 kubectl apply -f monitoring/node-exporter/cluster-role/
 kubectl apply -f monitoring/node-exporter/
-kubectl apply -f ingress/ingress.yaml
+# kubectl apply -f ingress/ingress.yaml
 
 # only for minikube
 #minikube addons enable ingress

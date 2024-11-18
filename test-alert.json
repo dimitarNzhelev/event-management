@@ -1,0 +1,13 @@
+[
+  {
+    "labels": {
+      "alertname": "TestAlert 69",
+      "severity": "critical"
+    },
+    "annotations": {
+      "summary": "Test Alert Triggered",
+      "description": "This is a manually triggered test alert."
+    },
+    "startsAt": "2024-11-18T00:00:00Z"
+  }
+]

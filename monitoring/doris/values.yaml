@@ -7,6 +7,39 @@ feSpec:
   image:
     repository: selectdb/doris.fe-ubuntu
     tag: 2.0.3
+  initContainers:
+  - name: init-doris-db
+    image: mysql:8.0
+    command: ["sh", "-c"]
+    args:
+      - |
+        until mysql -h doriscluster-fe -P 9030 -u root -e "SHOW DATABASES"; do
+          echo "Waiting for Doris FE to be ready...";
+          sleep 5;
+        done;
+        mysql -h doriscluster-fe -P 9030 -u root -e "
+          CREATE DATABASE IF NOT EXISTS test_database;
+          USE test_database;
+          CREATE TABLE alerts (
+            fingerprint VARCHAR(255),
+            status VARCHAR(255),
+            alert_name VARCHAR(255),
+            start_time DATETIME,
+            end_time DATETIME,
+            generator_url VARCHAR(1024),
+            labels VARCHAR(4096),
+            annotations VARCHAR(4096)
+          )
+          UNIQUE KEY(fingerprint)
+          DISTRIBUTED BY HASH(fingerprint) BUCKETS 10
+          PROPERTIES (
+            'replication_num' = '1',
+            'storage_format' = 'DEFAULT'
+          );
+          CREATE USER 'testUser' IDENTIFIED BY 'testPass';
+          GRANT SELECT_PRIV, ALTER_PRIV, LOAD_PRIV ON test_database TO 'testUser';
+        ";
+          
   service:
     # the fe service type, only supported ClusterIP, NodePort, LoadBalancer
     type: ClusterIP

@@ -5,7 +5,7 @@ metadata:
   namespace: monitoring
   annotations:
     prometheus.io/scrape: "true"
-    prometheus.io/port: "3000"
+    prometheus.io/port: "5000"
   labels:
     name: go-receiver
 spec:
