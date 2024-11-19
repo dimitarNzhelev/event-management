@@ -7,7 +7,6 @@ data "aws_availability_zones" "available" {
   }
 }
 
-
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.8.1"
@@ -54,7 +53,6 @@ module "eks" {
 
   eks_managed_node_group_defaults = {
     ami_type = "AL2_x86_64"
-
   }
 
   eks_managed_node_groups = {
@@ -80,8 +78,6 @@ module "eks" {
   }
 }
 
-
-# https://aws.amazon.com/blogs/containers/amazon-ebs-csi-driver-is-now-generally-available-in-amazon-eks-add-ons/ 
 data "aws_iam_policy" "ebs_csi_policy" {
   arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
 }
@@ -95,4 +91,49 @@ module "irsa-ebs-csi" {
   provider_url                  = module.eks.oidc_provider
   role_policy_arns              = [data.aws_iam_policy.ebs_csi_policy.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
+}
+
+resource "aws_security_group" "redshift" {
+  name        = "redshift-sg"
+  description = "Security group for Redshift cluster"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress {
+    from_port   = 5439
+    to_port     = 5439
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Open to the world for testing; restrict in production
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name        = "redshift-sg"
+  }
+}
+
+module "redshift" {
+  source  = "terraform-aws-modules/redshift/aws"
+  version = "6.0.0"
+
+  cluster_identifier = "${var.cluster_name}-redshift"
+  node_type          = "dc2.large" # Choose based on your needs
+  number_of_nodes    = 2           # Adjust the number of nodes
+
+  availability_zone  = var.azs[0]
+  database_name      = "alertsdb"
+  master_username    = "adminuser"
+  master_password    = "StrongPassword123" # Replace with a secure method for storing passwords
+
+  subnet_ids            = module.vpc.public_subnets
+  vpc_security_group_ids = [aws_security_group.redshift.id]
+
+  enhanced_vpc_routing  = true
+  publicly_accessible   = true # Allows external access for testing purposes
+
 }

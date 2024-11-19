@@ -19,31 +19,40 @@ spec:
         ports:
         - containerPort: 5000
         env:
-        - name: DORIS_HOST
+        - name: PORT
+          value: "5000"
+        - name: AUTH_TOKEN
           valueFrom:
             secretKeyRef:
               name: receiver-secrets
-              key: DORIS_HOST
-        - name: DORIS_PORT
+              key: AUTH_TOKEN
+        - name: REDSHIFT_HOST
           valueFrom:
             secretKeyRef:
               name: receiver-secrets
-              key: DORIS_PORT
-        - name: DORIS_USER
+              key: REDSHIFT_HOST
+        - name: REDSHIFT_PORT
           valueFrom:
             secretKeyRef:
               name: receiver-secrets
-              key: DORIS_USER
-        - name: DORIS_PASSWORD
+              key: REDSHIFT_PORT
+        - name: REDSHIFT_USER
           valueFrom:
             secretKeyRef:
               name: receiver-secrets
-              key: DORIS_PASSWORD
-        - name: DORIS_DATABASE
+              key: REDSHIFT_USER
+        - name: REDSHIFT_PASSWORD
           valueFrom:
             secretKeyRef:
               name: receiver-secrets
-              key: DORIS_DATABASE
+              key: REDSHIFT_PASSWORD
+        - name: REDSHIFT_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: receiver-secrets
+              key: REDSHIFT_DATABASE
+        - name: REDSHIFT_SSLMODE
+          value: "disable"
         resources:
           requests:
             cpu: "1000m"

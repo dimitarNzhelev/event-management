@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: a5247991bb0a34f4a91991d982f7d391-d890f48954b06f60.elb.eu-central-1.amazonaws.com # The URL of the LoadBalancer
+  - host: a45b4fca34e46495194948a8fc8b8588-a3e545aa2af00bc3.elb.eu-central-1.amazonaws.com # The URL of the LoadBalancer
     http:
       paths:
       - path: /

@@ -4,15 +4,13 @@ helm install url-shortener ./url-shortener-chart
 
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-helm repo add selectdb https://charts.selectdb.com
+# helm repo add selectdb https://charts.selectdb.com
 
 helm repo update
 
-helm install operator selectdb/doris-operator --namespace monitoring
-
-kubectl apply -f monitoring/doris/pv.yaml
-
-helm install -f monitoring/doris/values.yaml doriscluster selectdb/doris --namespace monitoring 
+# helm install operator selectdb/doris-operator --namespace monitoring
+# kubectl apply -f monitoring/doris/pv.yaml
+# helm install -f monitoring/doris/values.yaml doriscluster selectdb/doris --namespace monitoring 
 
 kubectl apply -f monitoring/go-receiver/
 
