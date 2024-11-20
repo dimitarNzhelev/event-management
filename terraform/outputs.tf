@@ -38,4 +38,7 @@ output "public_subnets" {
   value       = module.vpc.public_subnets
 }
 
-
+output "redshift_cluster_endpoint" {
+  description = "Endpoint for Redshift cluster"
+  value       = module.redshift.cluster_endpoint
+}

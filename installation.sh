@@ -4,13 +4,7 @@ helm install url-shortener ./url-shortener-chart
 
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-# helm repo add selectdb https://charts.selectdb.com
-
 helm repo update
-
-# helm install operator selectdb/doris-operator --namespace monitoring
-# kubectl apply -f monitoring/doris/pv.yaml
-# helm install -f monitoring/doris/values.yaml doriscluster selectdb/doris --namespace monitoring 
 
 kubectl apply -f monitoring/go-receiver/
 
@@ -28,9 +22,9 @@ helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx \
   --set controller.metrics.serviceMonitor.namespace=monitoring \
   --set controller.metrics.serviceMonitor.additionalLabels.release="prometheus"
 
-kubectl apply -f monitoring/service-monitors/
 kubectl apply -f monitoring/node-exporter/cluster-role/
 kubectl apply -f monitoring/node-exporter/
+kubectl apply -f monitoring/service-monitors/
 # kubectl apply -f ingress/ingress.yaml
 
 # only for minikube

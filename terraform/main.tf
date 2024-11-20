@@ -59,7 +59,7 @@ module "eks" {
     one = {
       name = "node-group-1"
 
-      instance_types = ["t3.xlarge"]
+      instance_types = ["t3.medium"]
 
       min_size     = 1
       max_size     = 3
@@ -69,7 +69,7 @@ module "eks" {
     two = {
       name = "node-group-2"
 
-      instance_types = ["t3.xlarge"]
+      instance_types = ["t3.large"]
 
       min_size     = 1
       max_size     = 2
@@ -99,23 +99,24 @@ resource "aws_security_group" "redshift" {
   vpc_id      = module.vpc.vpc_id
 
   ingress {
-    from_port   = 5439
-    to_port     = 5439
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # Open to the world for testing; restrict in production
+    from_port       = 5439
+    to_port         = 5439
+    protocol        = "tcp"
+    security_groups = [module.eks.node_security_group_id] # Reference the EKS node security group
   }
 
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"] # Allow all outbound traffic (default for AWS resources)
   }
 
   tags = {
     Name        = "redshift-sg"
   }
 }
+
 
 module "redshift" {
   source  = "terraform-aws-modules/redshift/aws"
