@@ -123,8 +123,8 @@ module "redshift" {
   version = "6.0.0"
 
   cluster_identifier = "${var.cluster_name}-redshift"
-  node_type          = "dc2.large" # Choose based on your needs
-  number_of_nodes    = 2           # Adjust the number of nodes
+  node_type          = "dc2.large"
+  number_of_nodes    = 2          
 
   availability_zone  = var.azs[0]
   database_name      = "alertsdb"
@@ -135,6 +135,5 @@ module "redshift" {
   vpc_security_group_ids = [aws_security_group.redshift.id]
 
   enhanced_vpc_routing  = true
-  publicly_accessible   = true # Allows external access for testing purposes
 
 }

@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+  namespace: monitoring
+  labels:
+    grafana_datasource: "1"
+data:
+  datasource.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://prometheus-server.monitoring.svc.cluster.local
+        isDefault: true
+        jsonData:
+          httpMethod: POST
+      - name: Redshift
+        type: postgres
+        access: proxy
+        url: dzhelev-test-cluster-redshift.cs6ir1smkzux.eu-central-1.redshift.amazonaws.com:5439
+        database: alertsdb
+        user: adminuser
+        secureJsonData:
+          password: StrongPassword123
+        jsonData:
+          sslmode: disable
