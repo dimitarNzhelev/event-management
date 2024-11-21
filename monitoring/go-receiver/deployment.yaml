@@ -13,6 +13,7 @@ spec:
       labels:
         name: go-receiver
     spec:
+      serviceAccountName: go-receiver-sa
       containers:
       - name: go-receiver
         image: dimitarnzhv/go-receiver:latest
