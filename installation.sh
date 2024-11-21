@@ -6,10 +6,12 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 
-kubectl apply -f monitoring/go-receiver/
+kubectl apply -f monitoring/grafana/datasources.yaml
+kubectl apply -f monitoring/grafana/dashboards/
 
 helm upgrade --install -f monitoring/values.yaml kube-prometheus-stack prometheus-community/kube-prometheus-stack -n monitoring
 
+kubectl apply -f monitoring/go-receiver/
 
 helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx \
   --namespace ingress-nginx \
