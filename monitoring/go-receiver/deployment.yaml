@@ -27,33 +27,31 @@ spec:
             secretKeyRef:
               name: receiver-secrets
               key: AUTH_TOKEN
-        - name: REDSHIFT_HOST
+        - name: DORIS_HOST
           valueFrom:
             secretKeyRef:
               name: receiver-secrets
-              key: REDSHIFT_HOST
-        - name: REDSHIFT_PORT
+              key: DORIS_HOST
+        - name: DORIS_PORT
           valueFrom:
             secretKeyRef:
               name: receiver-secrets
-              key: REDSHIFT_PORT
-        - name: REDSHIFT_USER
+              key: DORIS_PORT
+        - name: DORIS_USER
           valueFrom:
             secretKeyRef:
               name: receiver-secrets
-              key: REDSHIFT_USER
-        - name: REDSHIFT_PASSWORD
+              key: DORIS_USER
+        - name: DORIS_PASSWORD
           valueFrom:
             secretKeyRef:
               name: receiver-secrets
-              key: REDSHIFT_PASSWORD
-        - name: REDSHIFT_DATABASE
+              key: DORIS_PASSWORD
+        - name: DORIS_DATABASE
           valueFrom:
             secretKeyRef:
               name: receiver-secrets
-              key: REDSHIFT_DATABASE
-        - name: REDSHIFT_SSLMODE
-          value: "disable"
+              key: DORIS_DATABASE
         resources:
           requests:
             cpu: "1000m"

@@ -59,25 +59,26 @@ module "eks" {
     one = {
       name = "node-group-1"
 
-      instance_types = ["t3.medium"]
+      instance_types = ["t3.xlarge"]
 
-      min_size     = 1
-      max_size     = 3
-      desired_size = 2
+      min_size     = 2
+      max_size     = 5
+      desired_size = 4
     }
 
     two = {
       name = "node-group-2"
 
-      instance_types = ["t3.large"]
+      instance_types = ["t3.medium"]
 
       min_size     = 1
-      max_size     = 2
+      max_size     = 3
       desired_size = 1
     }
   }
 }
 
+# https://aws.amazon.com/blogs/containers/amazon-ebs-csi-driver-is-now-generally-available-in-amazon-eks-add-ons/ 
 data "aws_iam_policy" "ebs_csi_policy" {
   arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
 }
@@ -91,49 +92,4 @@ module "irsa-ebs-csi" {
   provider_url                  = module.eks.oidc_provider
   role_policy_arns              = [data.aws_iam_policy.ebs_csi_policy.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
-}
-
-resource "aws_security_group" "redshift" {
-  name        = "redshift-sg"
-  description = "Security group for Redshift cluster"
-  vpc_id      = module.vpc.vpc_id
-
-  ingress {
-    from_port       = 5439
-    to_port         = 5439
-    protocol        = "tcp"
-    security_groups = [module.eks.node_security_group_id] # Reference the EKS node security group
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"] # Allow all outbound traffic (default for AWS resources)
-  }
-
-  tags = {
-    Name        = "redshift-sg"
-  }
-}
-
-
-module "redshift" {
-  source  = "terraform-aws-modules/redshift/aws"
-  version = "6.0.0"
-
-  cluster_identifier = "${var.cluster_name}-redshift"
-  node_type          = "dc2.large"
-  number_of_nodes    = 2          
-
-  availability_zone  = var.azs[0]
-  database_name      = "alertsdb"
-  master_username    = "adminuser"
-  master_password    = "StrongPassword123" # Replace with a secure method for storing passwords
-
-  subnet_ids            = module.vpc.public_subnets
-  vpc_security_group_ids = [aws_security_group.redshift.id]
-
-  enhanced_vpc_routing  = true
-
 }

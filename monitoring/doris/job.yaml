@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: init-doris-db
+  namespace: monitoring
+spec:
+  activeDeadlineSeconds: 600
+  backoffLimit: 4
+  template:
+    spec:
+      containers:
+      - name: init-doris-db
+        image: mysql:8.0
+        command: ["sh", "-c"]
+        args:
+          - |
+            until mysql -h doriscluster-fe-service.monitoring.svc.cluster.local -P 9030 -u admin -e "SHOW DATABASES"; do
+              echo "Waiting for Doris FE to be ready...";
+              sleep 5;
+            done;
+            mysql -h doriscluster-fe-service.monitoring.svc.cluster.local -P 9030 -u root -e "
+              CREATE DATABASE dzhelev_db;
+              USE dzhelev_db;
+              CREATE USER 'dzhelev' IDENTIFIED BY 'dzhelev@123';
+              GRANT ALL ON dzhelev_db TO 'dzhelev';
+            ";
+      restartPolicy: OnFailure

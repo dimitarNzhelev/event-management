@@ -1,0 +1,84 @@
+dorisCluster:
+  name: "doriscluster"
+
+feSpec:
+  replicas: 1
+  image:
+    repository: selectdb/doris.fe-ubuntu
+    tag: 2.0.3
+  service:
+    type: ClusterIP
+    annotations: {}
+  configMap: {}
+  resource:
+    requests:
+      cpu: 2
+      memory: 4Gi
+    limits:
+      cpu: 2
+      memory: 4Gi
+  persistentVolumeClaim:
+    metaPersistentVolume:
+      claimName: doris-meta-pv
+    logsPersistentVolume:
+      claimName: doris-logs-pv
+
+beSpec:
+  replicas: 1
+  image:
+    repository: selectdb/doris.be-ubuntu
+    tag: 2.0.3
+  service:
+    type: ClusterIP
+    annotations: {}
+  configMap: {}
+  resource:
+    requests:
+      cpu: 2
+      memory: 4Gi
+    limits:
+      cpu: 2
+      memory: 4Gi
+  persistentVolumeClaim:
+    dataPersistentVolume:
+      claimName: doris-be-storage-pv
+    logsPersistentVolume:
+      claimName: doris-be-logs-pv
+
+cnSpec:
+  replicas: 1
+  labels: {}
+  image:
+    repository: selectdb/doris.be-ubuntu
+    tag: 2.0.3
+  service:
+    type: ClusterIP
+    annotations: {}
+  configMap: {}
+  resource: {}
+  nodeSelector: {}
+  env: []
+  affinity: {}
+  tolerations: []
+  hostAliases: []
+  persistentVolumeClaim: {}
+  autoScalingPolicy:
+    enable: true
+    minReplicas: 1
+    maxReplicas: 4
+    hpaPolicy: {}
+
+brokerSpec:
+  replicas: 1
+  labels: {}
+  image:
+    repository: selectdb/doris.broker-ubuntu
+    tag: 2.0.3
+  configMap: {}
+  resource: {}
+  nodeSelector: {}
+  env: []
+  affinity: {}
+  tolerations: []
+  hostAliases: []
+  persistentVolumeClaim: {}
