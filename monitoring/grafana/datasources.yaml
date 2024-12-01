@@ -16,13 +16,13 @@ data:
         isDefault: true
         jsonData:
           httpMethod: POST
-      - name: Redshift
-        type: postgres
+      - name: Doris
+        type: mysql
         access: proxy
-        url: dzhelev-test-cluster-redshift.cs6ir1smkzux.eu-central-1.redshift.amazonaws.com:5439
-        database: alertsdb
-        user: adminuser
+        url: doriscluster-fe-service.monitoring.svc.cluster.local:9030
+        database: dzhelev_db
+        user: dzhelev
         secureJsonData:
-          password: StrongPassword123
+          password: dzhelev@123
         jsonData:
           sslmode: disable

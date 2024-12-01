@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: redshift-dashboard
+  name: doris-dashboard
   namespace: monitoring
   labels:
     grafana_dashboard: "1"
 data:
-  redshift-dashboard.json: |
+  doris-dashboard.json: |
     {
       "annotations": {
         "list": [
@@ -27,13 +27,13 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 33,
+      "id": 1,
       "links": [],
       "panels": [
         {
           "datasource": {
-            "type": "grafana-postgresql-datasource",
-            "uid": "P361AF73B1E2326FC"
+            "type": "mysql",
+            "uid": "PCAFD928984F4DF70"
           },
           "fieldConfig": {
             "defaults": {
@@ -96,7 +96,7 @@ data:
             "x": 0,
             "y": 0
           },
-          "id": 1,
+          "id": 2,
           "options": {
             "legend": {
               "calcs": [],
@@ -109,17 +109,18 @@ data:
               "sort": "none"
             }
           },
-          "pluginVersion": "11.3.0",
+          "pluginVersion": "11.3.1",
           "targets": [
             {
+              "dataset": "dzhelev_db",
               "datasource": {
-                "type": "grafana-postgresql-datasource",
-                "uid": "P361AF73B1E2326FC"
+                "type": "mysql",
+                "uid": "PCAFD928984F4DF70"
               },
               "editorMode": "code",
               "format": "table",
               "rawQuery": true,
-              "rawSql": "SELECT\n  DATE_TRUNC('hour', start_time) AS time_bucket,\n  COUNT(*) AS alert_count\nFROM\n  alerts\nWHERE\n  start_time >= DATEADD(day, -7, CURRENT_DATE) -- Filter for the last 7 days\nGROUP BY\n  DATE_TRUNC('hour', start_time)\nORDER BY\n  time_bucket;\n",
+              "rawSql": "SELECT\n  UNIX_TIMESTAMP(DATE_FORMAT(start_time, '%Y-%m-%d %H:00:00')) AS time,\n  COUNT(*) AS alert_count\nFROM\n  alerts\nWHERE\n  start_time >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) -- Filter for the last 7 days\nGROUP BY\n  DATE_FORMAT(start_time, '%Y-%m-%d %H:00:00')\nORDER BY\n  time;",
               "refId": "A",
               "sql": {
                 "columns": [
@@ -140,8 +141,7 @@ data:
               }
             }
           ],
-          "title": "Alerts by time ",
-          "transparent": true,
+          "title": "Alerts by time",
           "type": "timeseries"
         }
       ],
@@ -157,7 +157,7 @@ data:
       },
       "timepicker": {},
       "timezone": "browser",
-      "title": "Redshift dashboard",
+      "title": "Apache Doris dashboard",
       "uid": "fe4lbp0qww6bke",
       "version": 1,
       "weekStart": ""
