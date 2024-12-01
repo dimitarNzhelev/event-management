@@ -28,3 +28,5 @@ spec:
         env:
         - name: BACKEND_URL
           value: "http://go-receiver-service:5000"
+        - name: GRAFANA_URL
+          value: "http://grafana.dzhelev.itgix.eu"

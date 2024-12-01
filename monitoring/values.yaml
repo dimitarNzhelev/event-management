@@ -402,6 +402,11 @@ alertmanager:
 ##-grafana-##    
 grafana:
   enabled: true
+  grafana.ini:
+    auth.anonymous:
+      org_role: Viewer
+    security:
+      allow_embedding: true
   namespaceOverride: ""
   forceDeployDatasources: false
   forceDeployDashboards: false
@@ -411,11 +416,14 @@ grafana:
   rbac:
     pspEnabled: false
   ingress:
-    enabled: false
-    annotations: {}
-    labels: {}
-    hosts: []
-    path: /
+    enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /
+      kubernetes.io/ingress.class: "nginx"
+    hosts:
+      - grafana.dzhelev.itgix.eu
+    paths:
+      - /
     tls: []
 
   sidecar:
@@ -427,7 +435,7 @@ grafana:
     datasources:
       enabled: true
       label: grafana_datasource
-      labelValue: "1" # Matches the label in the ConfigMap
+      labelValue: "1"
       searchNamespace: monitoring
 
   extraConfigmapMounts: []

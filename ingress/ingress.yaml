@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: a45b4fca34e46495194948a8fc8b8588-a3e545aa2af00bc3.elb.eu-central-1.amazonaws.com # The URL of the LoadBalancer
+  - host: shortlink.dzhelev.itgix.eu
     http:
       paths:
       - path: /
@@ -17,5 +17,28 @@ spec:
         backend:
           service:
             name: nextjs-service 
+            port:
+              number: 3000
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: event-manager-app-ingress
+  namespace: monitoring
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: dashboard.dzhelev.itgix.eu
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: event-manager-app-service 
             port:
               number: 3000
