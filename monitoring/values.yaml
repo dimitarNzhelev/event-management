@@ -416,15 +416,7 @@ grafana:
   rbac:
     pspEnabled: false
   ingress:
-    enabled: true
-    annotations:
-      nginx.ingress.kubernetes.io/rewrite-target: /
-      kubernetes.io/ingress.class: "nginx"
-    hosts:
-      - grafana.dzhelev.itgix.eu
-    paths:
-      - /
-    tls: []
+    enabled: false
 
   sidecar:
     dashboards:
