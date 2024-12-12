@@ -52,6 +52,8 @@ spec:
             secretKeyRef:
               name: receiver-secrets
               key: DORIS_DATABASE
+        - name: PROMETHEUS_URL
+          value: "http://kps-kube-prometheus-stack-prometheus:9090"
         resources:
           requests:
             cpu: "1000m"
