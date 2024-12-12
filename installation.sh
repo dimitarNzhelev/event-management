@@ -37,7 +37,7 @@ kubectl apply -f monitoring/service-monitors/
 kubectl apply -f monitoring/node-exporter/cluster-role/
 kubectl apply -f monitoring/node-exporter/
 
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.2/cert-manager.yaml
-
-kubectl apply -f ingress/encrypt/cluster-issuer.yaml
 kubectl apply -f ingress/ingress.yaml
+
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.2/cert-manager.yaml
+kubectl apply -f ingress/encrypt/cluster-issuer.yaml
