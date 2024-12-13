@@ -9,3 +9,6 @@ rules:
 - apiGroups: ["apps"]
   resources: ["deployments"]
   verbs: ["get", "list", "watch"]
+- apiGroups: ["monitoring.coreos.com"]
+  resources: ["prometheusrules"]
+  verbs: ["get", "list", "watch", "create", "delete"]
