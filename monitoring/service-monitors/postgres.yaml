@@ -4,7 +4,7 @@ metadata:
   name: postgres-service-monitor
   namespace: monitoring
   labels:
-    release: kube-prometheus-stack
+    release: kps
 spec:
   selector:
     matchLabels:

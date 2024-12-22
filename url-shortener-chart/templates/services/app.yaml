@@ -3,9 +3,6 @@ kind: Service
 metadata:
   name: nextjs-service
   namespace: {{ .Values.namespace }}
-  annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "3000"
   labels:
     name: nextjs-url-shortener
 spec:
