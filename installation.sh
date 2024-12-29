@@ -4,6 +4,7 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo add selectdb https://charts.selectdb.com
 helm repo update
+
 helm install operator selectdb/doris-operator --namespace monitoring
 kubectl apply -f monitoring/doris/pv.yaml
 helm install -f monitoring/doris/values.yaml doriscluster selectdb/doris --namespace monitoring 
@@ -23,6 +24,22 @@ kubectl apply -f monitoring/grafana/dashboards/
 kubectl apply -f monitoring/event-manager-app/
 
 helm upgrade --install -f monitoring/values.yaml kps prometheus-community/kube-prometheus-stack -n monitoring
+# helm repo add eks https://aws.github.io/eks-charts
+# helm repo update
+
+# kubectl create serviceaccount aws-load-balancer-controller -n kube-system
+# kubectl annotate serviceaccount aws-load-balancer-controller \
+#   -n kube-system \
+#   eks.amazonaws.com/role-arn=arn:aws:iam::722377226063:policy/AWSLoadBalancerControllerIAMPolicy-ZHELEV
+
+
+# helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-controller \
+#   -n kube-system \
+#   --set clusterName=dzhelev-test-cluster \
+#   --set serviceAccount.create=false \
+#   --set serviceAccount.name=aws-load-balancer-controller
+
+
 helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx \
   --namespace ingress-nginx \
   --create-namespace \
@@ -33,11 +50,11 @@ helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx \
   --set controller.metrics.serviceMonitor.enabled=true \
   --set controller.metrics.serviceMonitor.namespace=monitoring \
   --set controller.metrics.serviceMonitor.additionalLabels.release="prometheus"
-kubectl apply -f monitoring/service-monitors/
-kubectl apply -f monitoring/node-exporter/cluster-role/
-kubectl apply -f monitoring/node-exporter/
 
 kubectl apply -f ingress/ingress.yaml
-
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.2/cert-manager.yaml
 kubectl apply -f ingress/encrypt/cluster-issuer.yaml
+
+kubectl apply -f monitoring/service-monitors/
+# kubectl apply -f monitoring/node-exporter/cluster-role/
+# kubectl apply -f monitoring/node-exporter/
