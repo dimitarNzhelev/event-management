@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: url-shortener-db-push
+  namespace: url-shortener-app
+spec:
+  template:
+    spec:
+      containers:
+      - name: db-push
+        image: dimitarnzhv/nextjs-url-shortener:latest
+        command: ["/bin/sh", "-c"]
+        args: ["pnpm run db:push"]
+        env:
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: nextjs-secrets
+              key: DB_HOST
+        - name: DB_PORT
+          valueFrom:
+            secretKeyRef:
+              name: nextjs-secrets
+              key: DB_PORT
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: nextjs-secrets
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nextjs-secrets
+              key: DB_PASSWORD
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: nextjs-secrets
+              key: DB_NAME
+      restartPolicy: OnFailure
+  backoffLimit: 4

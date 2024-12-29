@@ -273,9 +273,16 @@ alertmanager:
         matchers:
         - alertname =~ ".*"
     receivers:
-    - name: 'go-receiver'
+    - name: go-receiver
       webhook_configs:
-      - url: 'http://go-receiver-service.monitoring.svc.cluster.local:5000/alerts'
+      - send_resolved: true
+        http_config:
+          authorization:
+            type: Bearer
+            credentials: "PASTE HERE THE AUTHORIZATION TOKEN"
+          follow_redirects: true
+          enable_http2: true
+        url: http://go-receiver-service.monitoring.svc.cluster.local:5000/alerts
     templates:
     - '/etc/alertmanager/config/*.tmpl'
   stringConfig: ""
