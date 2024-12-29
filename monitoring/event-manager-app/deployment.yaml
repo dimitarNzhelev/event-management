@@ -33,3 +33,5 @@ spec:
             secretKeyRef:
               name: receiver-secrets
               key: AUTH_TOKEN
+        - name: DASHBOARD_URL
+          value: "https://grafana.dzhelev.itgix.eu/public-dashboards/8044a7280939410990f76c63ecbdfb14"
