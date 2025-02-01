@@ -52,6 +52,10 @@ spec:
             secretKeyRef:
               name: receiver-secrets
               key: DORIS_DATABASE
+        - name: PROMETHEUS_URL
+          value: "http://kps-kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
+        - name: ALERTMANAGER_URL
+          value: "http://kps-kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local:9093"
         resources:
           requests:
             cpu: "1000m"
