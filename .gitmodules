@@ -1,9 +1,15 @@
 [submodule "url-shortener"]
 	path = url-shortener
 	url = https://github.com/dimitarNzhelev/url-shortener.git
+
 [submodule "go-receiver-agent"]
 	path = go-receiver-agent
 	url = https://github.com/dimitarNzhelev/go-receiver-agent.git
+
 [submodule "event-manager-app"]
 	path = event-manager-app
 	url = https://github.com/dimitarNzhelev/event-manager-app.git
+
+[submodule "infrastructure"]
+	path = infrastructure
+	url = https://github.com/dimitarNzhelev/diploma-infrastructure
