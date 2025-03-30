@@ -15,53 +15,74 @@ spec:
         name: postgres
     spec:
       containers:
-      - name: postgres
-        image: postgres:15
-        ports:
-        - containerPort: 5432
-        env:
-        - name: POSTGRES_DB
-          valueFrom:
-            secretKeyRef:
-              name: nextjs-secrets
-              key: DB_NAME
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: nextjs-secrets
-              key: DB_USER
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: nextjs-secrets
-              key: DB_PASSWORD
-        - name: PGDATA
-          value: /var/lib/postgresql/data/pgdata
-        volumeMounts: 
-        - name: postgres-data
-          mountPath: /var/lib/postgresql/data
-        command:
-        - /bin/bash
-        - -c
-        - |
-          mkdir -p /var/lib/postgresql/data/pgdata
-          chown postgres:postgres /var/lib/postgresql/data/pgdata
-          exec docker-entrypoint.sh postgres
+        - name: postgres
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: nextjs-secrets
+                  key: DB_NAME
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: nextjs-secrets
+                  key: DB_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nextjs-secrets
+                  key: DB_PASSWORD
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+          command:
+            - /bin/bash
+            - -c
+            - |
+              mkdir -p /var/lib/postgresql/data/pgdata
+              chown postgres:postgres /var/lib/postgresql/data/pgdata
+              exec docker-entrypoint.sh postgres
 
-      - name: postgres-exporter
-        image: prometheuscommunity/postgres-exporter
-        env:
-        - name: DATA_SOURCE_NAME
-          value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@localhost:5432/$(POSTGRES_DB)?sslmode=disable"
-        ports:
-        - containerPort: 9187
+        - name: postgres-exporter
+          image: prometheuscommunity/postgres-exporter
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: nextjs-secrets
+                  key: DB_NAME
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: nextjs-secrets
+                  key: DB_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nextjs-secrets
+                  key: DB_PASSWORD
+            - name: DATA_SOURCE_NAME
+              value: ""
+          command:
+            - /bin/sh
+            - -c
+            - |
+              export DATA_SOURCE_NAME="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}?sslmode=disable"
+              exec /bin/postgres_exporter
+          ports:
+            - containerPort: 9187
 
   volumeClaimTemplates:
-  - metadata:
-      name: postgres-data
-    spec:
-      accessModes: ["ReadWriteOnce"]
-      storageClassName: ebs-sc
-      resources:
-        requests:
-          storage: {{ .Values.postgres.storage }}
+    - metadata:
+        name: postgres-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: ebs-sc
+        resources:
+          requests:
+            storage: {{ .Values.postgres.storage }}
